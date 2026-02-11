@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHAFQAT IRFAN | Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .nav-link {
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #fbbf24;
+            /* amber-400 */
+        }
+        /* Motion + reveal utilities */
+        [data-animate] {
+            opacity: 0;
+            transform: translateY(18px) scale(.995);
+            transition: opacity 0.7s cubic-bezier(.2,.9,.2,1), transform 0.7s cubic-bezier(.2,.9,.2,1);
+            will-change: transform, opacity;
+        }
+        [data-animate].in-view {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Simple stagger for immediate children */
+        [data-animate] > * {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        [data-animate].in-view > *:nth-child(1){ transition-delay: .04s; opacity:1; transform:none }
+        [data-animate].in-view > *:nth-child(2){ transition-delay: .08s; opacity:1; transform:none }
+        [data-animate].in-view > *:nth-child(3){ transition-delay: .12s; opacity:1; transform:none }
+        [data-animate].in-view > *:nth-child(4){ transition-delay: .16s; opacity:1; transform:none }
+        [data-animate].in-view > *:nth-child(5){ transition-delay: .20s; opacity:1; transform:none }
+
+        /* Tilt micro-interaction */
+        [data-tilt] { transform-style: preserve-3d; perspective: 1000px; }
+        [data-tilt] img { transition: transform 0.35s cubic-bezier(.2,.9,.2,1); transform-origin: center; will-change: transform; }
+
+        /* Floating badge subtle motion */
+        .edu-badge { transition: transform 0.35s ease, box-shadow 0.35s ease; }
+        .edu-badge:hover { transform: translateY(-6px) rotate(-1deg); box-shadow: 0 18px 40px rgba(15,23,42,0.12); }
+
+        /* Project image hover mask */
+        .project-media{ position:relative; overflow:hidden }
+        .project-media::after{
+            content: '';
+            position:absolute; inset:0; background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.14) 100%);
+            opacity:0; transition: opacity .45s ease;
+        }
+        .group:hover .project-media::after{ opacity:1 }
+
+        /* Floating bobbing animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+        .float-animate { animation: float 4s ease-in-out infinite; }
+
+        /* Pulsing glow effect */
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.4); }
+            50% { box-shadow: 0 0 0 6px rgba(251, 191, 36, 0); }
+        }
+        .pulse-glow { animation: pulse-glow 3s infinite; }
+        
+        /* Changing glow colors from purple to amber */
+
+        /* Glowing soft shadow */
+        @keyframes glow-shadow {
+            0%, 100% { box-shadow: 0 8px 20px rgba(251, 191, 36, 0.08); }
+            50% { box-shadow: 0 8px 25px rgba(251, 191, 36, 0.12); }
+        }
+        .glow-shadow { animation: glow-shadow 3.5s ease-in-out infinite; }
+
+        /* Text appear letter by letter */
+        @keyframes text-reveal {
+            0% { opacity: 0; clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%); }
+            100% { opacity: 1; clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+        }
+        .text-reveal { animation: text-reveal 1.2s cubic-bezier(0.77, 0, 0.175, 1) forwards; }
+
+        /* Gradient shift animation */
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .gradient-animate {
+            background-size: 200% 200%;
+            animation: gradient-shift 3s ease infinite;
+        }
+
+        /* Shimmer effect */
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+        .shimmer {
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 20%, rgba(255,255,255,0) 40%, rgba(255,255,255,0));
+            background-size: 1000px 100%;
+            animation: shimmer 2s infinite;
+        }
+
+        /* Scale pop animation */
+        @keyframes scale-pop {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .scale-pop { animation: scale-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+        /* Rotate spin animation */
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .spin-slow { animation: spin-slow 8s linear infinite; }
+
+        /* Blur in animation */
+        @keyframes blur-in {
+            from { filter: blur(8px); opacity: 0; }
+            to { filter: blur(0); opacity: 1; }
+        }
+        .blur-in { animation: blur-in 0.8s ease-out; }
+
+        /* Bounce in animation */
+        @keyframes bounce-in {
+            0% { transform: translateY(40px) scale(0.9); opacity: 0; }
+            70% { transform: translateY(-5px) scale(1.02); opacity: 1; }
+            100% { transform: translateY(0) scale(1); }
+        }
+        .bounce-in { animation: bounce-in 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+
+        /* Cursor glow effect */
+        .cursor-glow {
+            position: fixed;
+            width: 30px;
+            height: 30px;
+            border: 2px solid rgba(251, 191, 36, 0.6);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            backdrop-filter: blur(1px);
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.4), inset 0 0 20px rgba(251, 191, 36, 0.2);
+            animation: glow-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes glow-pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(251, 191, 36, 0.4), inset 0 0 20px rgba(251, 191, 36, 0.2); }
+            50% { box-shadow: 0 0 40px rgba(251, 191, 36, 0.6), inset 0 0 30px rgba(251, 191, 36, 0.3); }
+        }
+
+        /* Glow trail effect */
+        .glow-trail {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(251, 191, 36, 0.85), rgba(251, 191, 36, 0));
+            opacity: 0.8;
+        }
+
+        /* Enhanced hover scale */
+        .hover-scale:hover { transform: scale(1.08) !important; }
+
+        /* Glow on hover */
+        .glow-on-hover:hover {
+            box-shadow: 0 0 30px rgba(251, 191, 36, 0.5), 0 0 60px rgba(251, 191, 36, 0.25) !important;
+            filter: brightness(1.06);
+        }
+
+        /* Neon text effect */
+        .neon-text {
+            text-shadow: 0 0 8px rgba(251, 191, 36, 0.4), 0 0 16px rgba(251, 191, 36, 0.2);
+            animation: neon-flicker 4s linear infinite;
+        }
+
+        @keyframes neon-flicker {
+            0%, 100% { text-shadow: 0 0 8px rgba(251, 191, 36, 0.4), 0 0 16px rgba(251, 191, 36, 0.2); }
+            50% { text-shadow: 0 0 12px rgba(251, 191, 36, 0.6), 0 0 24px rgba(251, 191, 36, 0.4); }
+        }
+
+        /* Rotate on scroll */
+        @keyframes infinite-rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .infinite-rotate { animation: infinite-rotate 20s linear infinite; }
+
+        /* Badge animations */
+        @keyframes badge-bounce {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-8px) scale(1.05); }
+        }
+        .badge-bounce { animation: badge-bounce 2s ease-in-out infinite; }
+
+        /* Rotating border animation */
+        @keyframes border-rotate {
+            0% { border-color: #fbbf24; }
+            25% { border-color: #f59e0b; }
+            50% { border-color: #fbbf24; }
+            75% { border-color: #f59e0b; }
+            100% { border-color: #fbbf24; }
+        }
+        .border-animate { animation: border-rotate 3s ease infinite; }
+
+        /* Shimmer text animation */
+        @keyframes shimmer-text {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+        .shimmer-text {
+            background: linear-gradient(90deg, #666, #999, #666);
+            background-size: 1000px 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer-text 2s infinite;
+        }
+
+        /* Glow pulse animation */
+        @keyframes glow-pulse-strong {
+            0%, 100% { box-shadow: 0 0 12px rgba(251, 191, 36, 0.4), 0 0 24px rgba(251, 191, 36, 0.2); }
+            50% { box-shadow: 0 0 20px rgba(251, 191, 36, 0.8), 0 0 40px rgba(251, 191, 36, 0.4); }
+        }
+        .glow-pulse-strong { animation: glow-pulse-strong 2.5s ease-in-out infinite; }
+
+        /* Scale breathing animation */
+        @keyframes scale-breath {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        .scale-breath { animation: scale-breath 3s ease-in-out infinite; }
+
+        /* Slide up with fade */
+        @keyframes slide-up-fade {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .slide-up-fade { animation: slide-up-fade 0.8s ease-out forwards; }
+
+        /* Animated progress bar fill */
+        @keyframes progress-fill {
+            from { width: 0 !important; }
+        }
+        .progress-animated {
+            animation: progress-fill 2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        .skill-card:nth-child(1) .progress-animated { animation-delay: 0s; }
+        .skill-card:nth-child(2) .progress-animated { animation-delay: 0.15s; }
+        .skill-card:nth-child(3) .progress-animated { animation-delay: 0.3s; }
+        .skill-card:nth-child(4) .progress-animated { animation-delay: 0.45s; }
+        .skill-card:nth-child(5) .progress-animated { animation-delay: 0.6s; }
+        .skill-card:nth-child(6) .progress-animated { animation-delay: 0.75s; }
+        .skill-card:nth-child(7) .progress-animated { animation-delay: 0.9s; }
+        .skill-card:nth-child(8) .progress-animated { animation-delay: 1.05s; }
+
+        /* Smooth count-up animation for percentages */
+        @keyframes count-up {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .skill-percent {
+            animation: count-up 1.5s ease-out forwards;
+        }
+        .skill-card:nth-child(1) .skill-percent { animation-delay: 0.4s; }
+        .skill-card:nth-child(2) .skill-percent { animation-delay: 0.55s; }
+        .skill-card:nth-child(3) .skill-percent { animation-delay: 0.7s; }
+        .skill-card:nth-child(4) .skill-percent { animation-delay: 0.85s; }
+        .skill-card:nth-child(5) .skill-percent { animation-delay: 1s; }
+        .skill-card:nth-child(6) .skill-percent { animation-delay: 1.15s; }
+        .skill-card:nth-child(7) .skill-percent { animation-delay: 1.3s; }
+        .skill-card:nth-child(8) .skill-percent { animation-delay: 1.45s; }
+
+        /* Enhanced text shadow for titles */
+        @keyframes title-glow {
+            0%, 100% { text-shadow: 0 0 10px rgba(251, 191, 36, 0.3); }
+            50% { text-shadow: 0 0 20px rgba(251, 191, 36, 0.5); }
+        }
+        .title-glow { animation: title-glow 3s ease-in-out infinite; }
+
+        /* Slide in from left */
+        @keyframes slide-in-left {
+            from { transform: translateX(-30px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .slide-in-left { animation: slide-in-left 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+
+        /* Slide in from right */
+        @keyframes slide-in-right {
+            from { transform: translateX(30px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .slide-in-right { animation: slide-in-right 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+
+        /* Icon pop animation */
+        @keyframes icon-pop {
+            0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+            70% { transform: scale(1.15) rotate(10deg); }
+            100% { transform: scale(1) rotate(0); opacity: 1; }
+        }
+        .icon-pop { animation: icon-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+        /* Gradient text animation */
+        @keyframes gradient-text {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #fbbf24, #f59e0b, #fbbf24);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-text 3s ease infinite;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-900">
+
+    <!-- HEADER -->
+    <header class="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between" data-animate>
+            <div class="text-2xl font-bold tracking-tighter neon-text">SHAFQAT<span class="text-amber-400">.</span></div>
+
+            <nav class="hidden md:flex items-center gap-10 text-sm font-semibold uppercase tracking-wider">
+                <a href="#home" class="nav-link">Home</a>
+                <a href="#experience" class="nav-link">Experience</a>
+                <a href="#skills" class="nav-link">Skills</a>
+                <a href="#projects" class="nav-link">Projects</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </nav>
+
+            <a href="resume.pdf" download
+                class="bg-gray-900 text-white px-6 py-2.5 rounded-full text-sm font-bold transition-all hover:bg-amber-400 hover:text-gray-900 hover:shadow-lg hover:shadow-amber-400/20">
+                Download Resume
+            </a>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section id="home" class="pt-40 pb-20 px-6">
+        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center" data-animate>
+            <div class="space-y-8">
+                <div
+                    class="inline-block px-4 py-1.5 bg-amber-100 text-amber-700 rounded-full text-xs font-bold uppercase tracking-widest pulse-glow">
+                    Available for projects
+                </div>
+                <h1 class="text-7xl md:text-8xl font-bold leading-tight">
+                    Creative <br><span class="italic text-amber-400">Designer & Developer</span>
+                </h1>
+                <p class="text-xl text-gray-600 max-w-lg leading-relaxed">
+                    I'm <span class="text-gray-900 font-semibold">Shafqat Irfan</span>, an <span
+                        class="text-gray-900 font-semibold">MCA student at REVA University</span> with expertise in both <span class="text-gray-900 font-semibold">UI/UX design</span> and <span class="text-gray-900 font-semibold">web development</span>. I create intuitive digital products with a design-first approach, combining aesthetic UI/UX principles with robust frontend development.
+                </p>
+                <div class="flex items-center gap-6 pt-4">
+                    <a href="#projects"
+                        class="bg-amber-400 text-gray-900 px-8 py-4 rounded-xl font-bold shadow-xl shadow-amber-400/20 hover:scale-105 transition-transform glow-on-hover relative overflow-hidden group">
+                        <span class="relative z-10">Explore My Work</span>
+                        <div class="absolute inset-0 bg-amber-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+                    </a>
+                    <a href="#contact"
+                        class="text-gray-900 font-bold border-b-2 border-amber-400 pb-1 hover:text-amber-400 transition-colors">
+                        Let's Talk
+                    </a>
+                </div>
+            </div>
+            <div class="relative float-animate" data-animate>
+                <div class="aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl project-media glow-shadow" data-tilt>
+                    <img src="shafqat.jpg" alt="Shafqat Irfan" class="w-full h-full object-cover">
+                </div>
+                <!-- Experience Badge -->
+                <div class="absolute -bottom-8 -right-8 bg-gradient-to-br from-amber-50 to-orange-50 p-8 rounded-2xl shadow-xl hidden md:block edu-badge scale-pop glow-pulse-strong border-2 border-amber-400 badge-bounce" data-animate style="animation-delay: 0.4s">
+                    <div class="flex flex-col gap-2 text-center">
+                        <div class="text-3xl font-black text-amber-500">1+</div>
+                        <div class="text-xs font-bold text-gray-700 uppercase tracking-widest">Year Experience</div>
+                        <div class="text-sm font-semibold text-gray-600">Web Devlopment & UI/UX Designing
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience" class="py-32 bg-gray-50" data-animate>
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="text-5xl font-bold mb-16 text-center">Work <span class="text-amber-400 italic">Experience</span>
+            </h2>
+
+            <div class="max-w-4xl mx-auto space-y-12">
+                <!-- Experience Item -->
+                <div class=\"relative pl-12 border-l-2 border-gray-200 hover:border-purple-500 transition-colors\" data-animate>
+                    <div class="absolute -left-[11px] top-0 w-5 h-5 bg-amber-400 rounded-full border-4 border-white animate-pulse">
+                    </div>
+                    <div
+                        class=\"bg-white p-10 rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl transition-all glow-on-hover blur-in\" data-animate>
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                            <div>
+                                <h3 class="text-2xl font-bold text-gray-900">Full-Stack Developer & UI/UX Designer</h3>
+                                <p class="text-amber-500 font-bold">Dev Creations and Solutions</p>
+                            </div>
+                            <div
+                                class="px-4 py-1.5 bg-gray-900 text-white rounded-full text-xs font-bold uppercase tracking-widest h-fit">
+                                Nov 2025 - Present
+                            </div>
+                        </div>
+                        <ul class="space-y-4 text-gray-600 leading-relaxed">
+                            <li class="flex items-start gap-4">
+                                <span class="mt-2 w-1.5 h-1.5 bg-amber-400 rounded-full flex-shrink-0"></span>
+                                Designed and developed responsive web pages using HTML, CSS, and modern UI frameworks.
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <span class="mt-2 w-1.5 h-1.5 bg-amber-400 rounded-full flex-shrink-0"></span>
+                                Collaborated with developers and designers to implement frontend features and UI
+                                components.
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <span class="mt-2 w-1.5 h-1.5 bg-amber-400 rounded-full flex-shrink-0"></span>
+                                Conducted UI/UX research, user flow analysis, and design iteration for improved product
+                                performance.
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <span class="mt-2 w-1.5 h-1.5 bg-amber-400 rounded-full flex-shrink-0"></span>
+                                Utilized tools like Figma, Git, and GitHub for version control and project coordination.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" class="py-32 bg-white" data-animate>
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end gap-8 mb-20">
+                <div class="space-y-4">
+                    <h2 class="text-5xl font-bold">Expertise & <span class="italic text-amber-400">Skills</span></h2>
+                    <p class="text-gray-500 max-w-md">Skilled in frontend development, UI/UX design, and data-driven
+                        solutions.</p>
+                </div>
+                <div class="hidden md:block h-[1px] flex-1 bg-gray-100 mx-12 mb-6"></div>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <!-- Skill 1 -->
+                <div class="p-6 rounded-2xl border border-gray-100 bg-gray-50/50 group hover:border-amber-400 transition-all glow-on-hover" data-animate>
+                    <div class="font-bold text-gray-700 mb-4">UI/UX Design</div>
+                    <div class="w-full bg-gray-200 rounded-full h-4 relative overflow-hidden">
+                        <div class="absolute left-0 top-0 h-4 bg-amber-400" style="width:90%"></div>
+                        <div class="absolute inset-0 flex items-center justify-center text-xs font-bold text-white">90%</div>
+                    </div>
+                </div>
+
+                <!-- Skill 2 -->
+                <div class="p-6 rounded-2xl border border-gray-100 bg-gray-50/50 group hover:border-amber-400 transition-all glow-on-hover" data-animate>
+                    <div class="font-bold text-gray-700 mb-4">Web Development</div>
+                    <div class="w-full bg-gray-200 rounded-full h-4 relative overflow-hidden">
+                        <div class="absolute left-0 top-0 h-4 bg-amber-400" style="width:95%"></div>
+                        <div class="absolute inset-0 flex items-center justify-center text-xs font-bold text-white">95%</div>
+                    </div>
+                </div>
+
+                <!-- Skill 3 -->
+                <div class="p-6 rounded-2xl border border-gray-100 bg-gray-50/50 group hover:border-amber-400 transition-all glow-on-hover" data-animate>
+                    <div class="font-bold text-gray-700 mb-4">Python</div>
+                    <div class="w-full bg-gray-200 rounded-full h-4 relative overflow-hidden">
+                        <div class="absolute left-0 top-0 h-4 bg-amber-400" style="width:75%"></div>
+                        <div class="absolute inset-0 flex items-center justify-center text-xs font-bold text-white">75%</div>
+                    </div>
+                </div>
+
+                <!-- Skill 4 -->
+                <div class="p-6 rounded-2xl border border-gray-100 bg-gray-50/50 group hover:border-amber-400 transition-all glow-on-hover" data-animate>
+                    <div class="font-bold text-gray-700 mb-4">Figma</div>
+                    <div class="w-full bg-gray-200 rounded-full h-4 relative overflow-hidden">
+                        <div class="absolute left-0 top-0 h-4 bg-amber-400" style="width:85%"></div>
+                        <div class="absolute inset-0 flex items-center justify-center text-xs font-bold text-white">85%</div>
+                    </div>
+                </div>
+
+                <!-- Skill 5 -->
+                <div class="p-6 rounded-2xl border border-gray-100 bg-gray-50/50 group hover:border-amber-400 transition-all glow-on-hover" data-animate>
+                    <div class="font-bold text-gray-700 mb-4">SQL</div>
+                    <div class="w-full bg-gray-200 rounded-full h-4 relative overflow-hidden">
+                        <div class="absolute left-0 top-0 h-4 bg-amber-400" style="width:80%"></div>
+                        <div class="absolute inset-0 flex items-center justify-center text-xs font-bold text-white">80%</div>
+                    </div>
+                </div>
+
+                <!-- Skill 6 -->
+                <div class="p-6 rounded-2xl border border-gray-100 bg-gray-50/50 group hover:border-amber-400 transition-all glow-on-hover" data-animate>
+                    <div class="font-bold text-gray-700 mb-4">Git</div>
+                    <div class="w-full bg-gray-200 rounded-full h-4 relative overflow-hidden">
+                        <div class="absolute left-0 top-0 h-4 bg-amber-400" style="width:85%"></div>
+                        <div class="absolute inset-0 flex items-center justify-center text-xs font-bold text-white">85%</div>
+                    </div>
+                </div>
+
+                <!-- Skill 7 -->
+                <div class="p-6 rounded-2xl border border-gray-100 bg-gray-50/50 group hover:border-amber-400 transition-all glow-on-hover" data-animate>
+                    <div class="font-bold text-gray-700 mb-4">AI & ML</div>
+                    <div class="w-full bg-gray-200 rounded-full h-4 relative overflow-hidden">
+                        <div class="absolute left-0 top-0 h-4 bg-amber-400" style="width:70%"></div>
+                        <div class="absolute inset-0 flex items-center justify-center text-xs font-bold text-white">70%</div>
+                    </div>
+                </div>
+
+                <!-- Skill 8 -->
+                <div class="p-6 rounded-2xl border border-gray-100 bg-gray-50/50 group hover:border-amber-400 transition-all glow-on-hover" data-animate>
+                    <div class="font-bold text-gray-700 mb-4">GitHub</div>
+                    <div class="w-full bg-gray-200 rounded-full h-4 relative overflow-hidden">
+                        <div class="absolute left-0 top-0 h-4 bg-amber-400" style="width:80%"></div>
+                        <div class="absolute inset-0 flex items-center justify-center text-xs font-bold text-white">80%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" class="py-32 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-20 space-y-4">
+                <h2 class="text-5xl font-bold underline decoration-amber-400 underline-offset-8">Featured <span
+                        class="italic">Projects</span></h2>
+                <p class="text-gray-500">A collection of digital solutions I've brought to life.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-12">
+                <!-- Project 1: Vertex Advisory -->
+                <div
+                    class="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all border border-gray-100 flex flex-col h-full bounce-in glow-on-hover"
+                    data-animate>
+                    <div class="h-64 bg-gray-100 overflow-hidden project-media relative" data-tilt>
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80"
+                            alt="Vertex Advisory"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    </div>
+                    <div class="p-10 flex flex-col flex-grow">
+                        <div class="text-xs font-bold text-amber-600 uppercase tracking-widest mb-4">Consulting Platform
+                        </div>
+                        <h3 class="text-3xl font-bold mb-6">Vertex Advisory</h3>
+                        <p class="text-gray-500 leading-relaxed mb-8 flex-grow">
+                            User-centric professional platform design for advisory and consulting services.
+                        </p>
+                        <a href="#"
+                            class="inline-flex items-center text-gray-900 font-bold group-hover:text-amber-400 transition-colors">
+                            VIEW DEMO <svg class="ml-2 w-5 h-5 group-hover:translate-x-2 transition-transform"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project 2: Gusto -->
+                <div
+                    class="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all border border-gray-100 flex flex-col h-full bounce-in glow-on-hover"
+                    data-animate>
+                    <div class="h-64 bg-gray-100 overflow-hidden project-media relative" data-tilt>
+                        <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80"
+                            alt="Gusto Logistics"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    </div>
+                    <div class="p-10 flex flex-col flex-grow">
+                        <div class="text-xs font-bold text-amber-600 uppercase tracking-widest mb-4">Food Delivery App
+                        </div>
+                        <h3 class="text-3xl font-bold mb-6">Gusto</h3>
+                        <p class="text-gray-500 leading-relaxed mb-8 flex-grow">
+                            Smooth, user-friendly ordering experience for a modern food delivery system.
+                        </p>
+                        <a href="#"
+                            class="inline-flex items-center text-gray-900 font-bold group-hover:text-amber-400 transition-colors">
+                            VIEW DEMO <svg class="ml-2 w-5 h-5 group-hover:translate-x-2 transition-transform"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project 3: Eco Trekkers -->
+                <div
+                    class="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all border border-gray-100 flex flex-col h-full bounce-in glow-on-hover"
+                    data-animate>
+                    <div class="h-64 bg-gray-100 overflow-hidden project-media relative" data-tilt>
+                        <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80"
+                            alt="Eco Trekkers"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    </div>
+                    <div class="p-10 flex flex-col flex-grow">
+                        <div class="text-xs font-bold text-amber-600 uppercase tracking-widest mb-4">Adventure App</div>
+                        <h3 class="text-3xl font-bold mb-6">Eco Trekkers</h3>
+                        <p class="text-gray-500 leading-relaxed mb-8 flex-grow">
+                            Nature and trekking enthusiast companion, built for sustainable exploration.
+                        </p>
+                        <a href="#"
+                            class="inline-flex items-center text-gray-900 font-bold group-hover:text-amber-400 transition-colors">
+                            VIEW DEMO <svg class="ml-2 w-5 h-5 group-hover:translate-x-2 transition-transform"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="py-32 bg-gray-900 text-white">
+        <div class="max-w-4xl mx-auto px-6 text-center space-y-12">
+            <h2 class="text-6xl font-bold">Ready to <span class="text-amber-400 italic">Connect</span>?</h2>
+            <p class="text-gray-400 text-xl max-w-2xl mx-auto">
+                Whether you have a project in mind or just want to say hi, my inbox is always open.
+            </p>
+            <div class="pt-8 text-center flex flex-col items-center">
+                <div class="text-xs font-bold text-amber-400 uppercase tracking-[0.3em] mb-4">Location</div>
+                <div class="text-xl font-medium mb-12">Bengaluru, India (On-site)</div>
+                <a href="mailto:shafqatirfan@gmail.com"
+                    class="text-lg md:text-xl font-semibold border-b-2 border-amber-400 hover:text-amber-400 transition-colors cursor-pointer">
+                    shafqatirfan@gmail.com
+                </a>
+            </div>
+            <div class="flex justify-center gap-10 pt-10 text-gray-400 font-bold uppercase tracking-widest text-xs">
+                <a href="https://www.linkedin.com/in/shafqat-irfan-7b37632a6/" target="_blank"
+                    class="hover:text-amber-400 transition-colors">LinkedIn</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="py-12 bg-white border-t border-gray-100">
+        <div
+            class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8 text-sm text-gray-400">
+            <div>© 2026 Shafqat Irfan. All rights reserved.</div>
+            <div class="flex gap-8">
+                <a href="#" class="hover:text-gray-900 transition-colors">Privacy Policy</a>
+                <a href="#" class="hover:text-gray-900 transition-colors">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+</body>
+
+    <script>
+        // Cursor glow effect - disabled for cleaner animations
+        // const cursorGlow = document.createElement('div');
+        // cursorGlow.classList.add('cursor-glow');
+        // document.body.appendChild(cursorGlow);
+
+        // Reveal on scroll
+        (function(){
+            const io = new IntersectionObserver((entries)=>{
+                entries.forEach(e=>{
+                    if(e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target) }
+                })
+            },{threshold:0.12});
+            document.querySelectorAll('[data-animate]').forEach(el=> io.observe(el));
+
+            // Tilt interaction for elements with data-tilt
+            const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+            document.querySelectorAll('[data-tilt]').forEach(el=>{
+                const img = el.querySelector('img');
+                if(!img) return;
+                el.addEventListener('mousemove', (ev)=>{
+                    const rect = el.getBoundingClientRect();
+                    const x = (ev.clientX - rect.left) / rect.width - 0.5;
+                    const y = (ev.clientY - rect.top) / rect.height - 0.5;
+                    const rx = clamp(-y * 12, -18, 18);
+                    const ry = clamp(x * 12, -18, 18);
+                    img.style.transform = `scale(1.05) rotateX(${rx}deg) rotateY(${ry}deg)`;
+                });
+                el.addEventListener('mouseleave', ()=> img.style.transform = 'scale(1) rotateX(0deg) rotateY(0deg)');
+            });
+        })();
+
+        // Parallax effect on scroll (clamped to avoid flipping images)
+        window.addEventListener('scroll', () => {
+            document.querySelectorAll('[data-tilt]').forEach((el) => {
+                const rect = el.getBoundingClientRect();
+                const viewportCenter = window.innerHeight / 2;
+                const elementCenter = rect.top + rect.height / 2;
+                const offset = elementCenter - viewportCenter; // positive when below center
+                // convert offset to a small rotation and clamp to [-18, 18] degrees
+                const angle = Math.max(-18, Math.min(18, offset * 0.03));
+                el.style.transform = `perspective(1000px) rotateX(${angle}deg)`;
+            });
+        });
+
+        // Add shimmer effect to buttons on page load
+        window.addEventListener('load', () => {
+            document.querySelectorAll('a, button, [role="button"]').forEach((el) => {
+                const shimmer = document.createElement('div');
+                shimmer.classList.add('shimmer');
+                shimmer.style.position = 'absolute';
+                shimmer.style.top = '0';
+                shimmer.style.left = '0';
+                shimmer.style.right = '0';
+                shimmer.style.bottom = '0';
+                shimmer.style.pointerEvents = 'none';
+                if (el.style.position === '' || el.style.position === 'static') {
+                    el.style.position = 'relative';
+                }
+                el.appendChild(shimmer);
+            });
+        });
+    </script>
+
+</body>
+
+</html>
